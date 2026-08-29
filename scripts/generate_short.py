@@ -24,7 +24,9 @@ PORTRAITS_DIR = ASSETS_DIR / "portraits"
 MUSIC_DIR = ASSETS_DIR / "music"
 FONTS_DIR = ASSETS_DIR / "fonts"
 
-VOICE = "en-US-GuyNeural"
+VOICE = "en-US-ChristopherNeural"  # deep, mature, documentary-narrator tone
+RATE = "-12%"   # slower, more weighty delivery
+PITCH = "-8Hz"  # deeper
 FPS = 30
 WIDTH, HEIGHT = 1080, 1920
 PRE_ROLL = 1.3
@@ -45,6 +47,13 @@ WIKI_TITLE_OVERRIDES = {
 # mislabeled "public domain" on Commons). Exact Commons File: title.
 MANUAL_FILE_OVERRIDES = {
     "Winston Churchill": "File:Winston Churchill in his uniform as an Oxfordshire Hussar c1910.jpg",
+    # No contemporary portraits exist for these figures (Islamic depiction
+    # conventions for revered early companions; Wikipedia's lead image for
+    # each is unrelated - a mosque, a modern artwork, or the Hagia Sophia).
+    # Using genuine historical calligraphy/manuscript art instead.
+    "Khalid ibn al-Walid": "File:Khalid ibn al-Walid in Calligraphy.png",
+    "Umar ibn al-Khattab": "File:Rashidun Caliphs Umar ibn Al-Khattāb - عُمر بن الخطّاب ثاني الخلفاء الراشدين.svg",
+    "Rumi": 'File:Selection from "Mathnavi-yi ma‘navi" by Jalal al-Din Rumi copied by Mir Ali Haravi (FGA F1944.48 ff.11v-12r).jpg',
 }
 
 
@@ -220,7 +229,7 @@ def fetch_portrait(person, query):
 
 
 async def synthesize(text, out_path):
-    communicate = edge_tts.Communicate(text, VOICE, boundary="WordBoundary")
+    communicate = edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH, boundary="WordBoundary")
     submaker = edge_tts.SubMaker()
     with open(out_path, "wb") as f:
         async for chunk in communicate.stream():
