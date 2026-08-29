@@ -49,3 +49,4 @@ jobs:
           git add data/state.json assets/portraits/
           git diff --cached --quiet || git commit -m "Update rotation state [skip ci]"
           git push
+
