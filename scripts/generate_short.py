@@ -25,9 +25,13 @@ MUSIC_DIR = ASSETS_DIR / "music"
 FONTS_DIR = ASSETS_DIR / "fonts"
 
 VOICE = "en-US-ChristopherNeural"  # deep, mature, documentary-narrator tone
-RATE = "-5%"    # slightly slower, more weighty delivery
-PITCH = "+0Hz"  # pitch-shifting is done in post (rubberband) - it's cleaner than edge-tts's own pitch param
-NARRATION_FX = "rubberband=pitch=0.90,bass=g=4:f=200:w=0.6,aecho=0.6:0.6:35:0.25"
+RATE = "-5%"     # slightly slower, more weighty delivery
+PITCH = "-15Hz"  # deeper - computed server-side by edge-tts, so it's identical on every machine
+# Mild bass warmth only - `bass` and `loudnorm` are core ffmpeg filters present on every
+# build. The earlier rubberband+aecho chain relied on librubberband, whose behavior
+# differed enough between this Mac's ffmpeg and Ubuntu's (GitHub Actions) that the
+# rendered narration came out far too quiet on the runner - not worth the risk.
+NARRATION_FX = "bass=g=3:f=200:w=0.6"
 FPS = 30
 WIDTH, HEIGHT = 1080, 1920
 PRE_ROLL = 1.3
@@ -361,7 +365,10 @@ def render_video(portrait_path, narration_path, music_path, ass_path, total_dura
         f"[2:a]atrim=0:{total_duration},volume={MUSIC_VOLUME},"
         f"afade=t=in:st=0:d=1.0,afade=t=out:st={fade_out_start}:d=1.5[music]"
     )
-    af_mix = "[narr][music]amix=inputs=2:duration=longest:normalize=0[aout]"
+    af_mix = (
+        "[narr][music]amix=inputs=2:duration=longest:normalize=0,"
+        "loudnorm=I=-14:TP=-1.5:LRA=11[aout]"
+    )
 
     cmd = [
         FFMPEG, "-y",
