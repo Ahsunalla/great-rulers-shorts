@@ -1,0 +1,51 @@
+name: Daily Shorts
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+    - cron: "0 14 * * *"
+    - cron: "0 19 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Write Google credentials from secrets
+        run: |
+          echo '${{ secrets.YT_CLIENT_SECRET_JSON }}' > client_secret.json
+          echo '${{ secrets.YT_TOKEN_JSON }}' > token.json
+
+      - name: Generate short
+        id: generate
+        run: |
+          RUN_DIR=$(python scripts/generate_short.py | tail -1)
+          echo "run_dir=$RUN_DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to YouTube
+        run: python scripts/upload_youtube.py "${{ steps.generate.outputs.run_dir }}"
+
+      - name: Clean up credentials
+        if: always()
+        run: rm -f client_secret.json token.json
+
+      - name: Commit rotation state and newly cached assets
+        run: |
+          git config user.name "great-rulers-shorts-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/state.json assets/portraits/
+          git diff --cached --quiet || git commit -m "Update rotation state [skip ci]"
+          git push

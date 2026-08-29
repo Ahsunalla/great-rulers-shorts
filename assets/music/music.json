@@ -1,0 +1,17 @@
+{
+  "attribution": "Music by Kevin MacLeod (incompetech.com), licensed under Creative Commons: By Attribution 4.0 (creativecommons.org/licenses/by/4.0/)",
+  "tracks": [
+    {"file": "impact_moderato.mp3", "title": "Impact Moderato", "mood": "triumphant"},
+    {"file": "heroic_age.mp3", "title": "Heroic Age", "mood": "triumphant"},
+    {"file": "five_armies.mp3", "title": "Five Armies", "mood": "triumphant"},
+    {"file": "rite_of_passage.mp3", "title": "Rite of Passage", "mood": "triumphant"},
+    {"file": "thunderbird.mp3", "title": "Thunderbird", "mood": "triumphant"},
+    {"file": "ready_aim_fire.mp3", "title": "Ready, Aim, Fire", "mood": "battle"},
+    {"file": "crusade.mp3", "title": "Crusade", "mood": "battle"},
+    {"file": "killers.mp3", "title": "Killers", "mood": "battle"},
+    {"file": "volatile_reaction.mp3", "title": "Volatile Reaction", "mood": "battle"},
+    {"file": "faceoff.mp3", "title": "Faceoff", "mood": "battle"},
+    {"file": "long_note_one.mp3", "title": "Long Note One", "mood": "somber"},
+    {"file": "constance.mp3", "title": "Constance", "mood": "somber"}
+  ]
+}
