@@ -25,8 +25,9 @@ MUSIC_DIR = ASSETS_DIR / "music"
 FONTS_DIR = ASSETS_DIR / "fonts"
 
 VOICE = "en-US-ChristopherNeural"  # deep, mature, documentary-narrator tone
-RATE = "-12%"   # slower, more weighty delivery
-PITCH = "-8Hz"  # deeper
+RATE = "-5%"    # slightly slower, more weighty delivery
+PITCH = "+0Hz"  # pitch-shifting is done in post (rubberband) - it's cleaner than edge-tts's own pitch param
+NARRATION_FX = "rubberband=pitch=0.90,bass=g=4:f=200:w=0.6,aecho=0.6:0.6:35:0.25"
 FPS = 30
 WIDTH, HEIGHT = 1080, 1920
 PRE_ROLL = 1.3
@@ -355,7 +356,7 @@ def render_video(portrait_path, narration_path, music_path, ass_path, total_dura
         f"format=yuv420p,eq=brightness=-0.02:saturation=1.08,"
         f"subtitles=filename='{escape_filter_path(ass_path)}':fontsdir='{escape_filter_path(FONTS_DIR)}'"
     )
-    af_narr = f"[1:a]adelay={pre_ms}:all=1,apad=whole_dur={total_duration}[narr]"
+    af_narr = f"[1:a]{NARRATION_FX},adelay={pre_ms}:all=1,apad=whole_dur={total_duration}[narr]"
     af_music = (
         f"[2:a]atrim=0:{total_duration},volume={MUSIC_VOLUME},"
         f"afade=t=in:st=0:d=1.0,afade=t=out:st={fade_out_start}:d=1.5[music]"
