@@ -1,11 +1,11 @@
 {
-  "next_quote_index": 5,
+  "next_quote_index": 6,
   "next_music_index": 0,
   "mood_counters": {
     "triumphant": 1,
-    "battle": 2,
+    "battle": 3,
     "somber": 2
   },
-  "last_run_utc": "2026-08-30T17:59:34.131792+00:00",
-  "total_runs": 5
+  "last_run_utc": "2026-08-30T21:53:12.395523+00:00",
+  "total_runs": 6
 }
